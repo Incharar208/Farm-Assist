@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+// conponents
+import Header from "./components/Header.tsx";
+// pages
+import Home from "./pages/Home/Home.tsx";
+import Register from "./pages/Auth/Register.tsx";
+import Login from "./pages/Auth/Login.tsx";
+import Weather from "./pages/WeatherReport/Weather.tsx";
+import CropAdviser from "./pages/CropAdviser/CropAdviser.tsx";
+import Disease from "./pages/DiseaseDetector/Disease.tsx";
+import ErrorPage from "./pages/ErrorHandler/ErrorPage.tsx";
 
-function App() {
-  const [count, setCount] = useState(0)
+const MainLayout = () => (
+  <>
+    <Header />
+    <Outlet />
+  </>
+);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "weather.report",
+        element: <Weather />,
+      },
+      {
+        path: "/crop.adviser.ai",
+        element: <CropAdviser />,
+      },
+      {
+        path: "/crop.disease.ai",
+        element: <Disease />,
+      },
+      {
+        path: "/auth.register",
+        element: <Register />,
+      },
+      {
+        path: "/auth.login",
+        element: <Login />,
+      },
+    ],
+  },
+]);
 
-export default App
+const App = () => (
+  <div className="app">
+    <RouterProvider router={router} />
+  </div>
+);
+
+export default App;
