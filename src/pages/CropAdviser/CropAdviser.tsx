@@ -21,7 +21,7 @@ import UnAuthAlert from "./UnAuthAlert";
 const CropAdviser = () => {
   const { USER } = useAuth();
   const [AI_Loading, set_AI_Loading] = useState(false);
-  const [AI_Results, set_AI_Results] = useState<any>(null);
+  // const [AI_Results, set_AI_Results] = useState<any>(null);
   const [inputs, setInputs] = useState<{
     N?: number;
     P?: number;
@@ -31,6 +31,7 @@ const CropAdviser = () => {
     pH?: number;
     R?: number;
   }>({});
+  const [recommendedCrops, setRecommendedCrops] = useState<any>();
   const inputsList = [
     { title: "Nitrogen", id: "N", units: "kg/ha", ex: "90.005" },
     { title: "Phosphorus", id: "P", units: "kg/ha", ex: "42.5" },
@@ -42,12 +43,32 @@ const CropAdviser = () => {
   ];
   const inputsOnChange = (event: ChangeEvent<HTMLInputElement>) =>
     setInputs({ ...inputs, [event.target.id]: event.target.value });
+
+  // const formOnSubmit = async (event: FormEvent) => {
+  //   event.preventDefault();
+  //   set_AI_Loading(true);
+  //   setRecommendedCrops(await fetch('https://127.0.0.1/5000/predict'))
+  //   // set_AI_Results(JSON.stringify(inputs));
+  //   set_AI_Loading(false);
+  // };
   const formOnSubmit = async (event: FormEvent) => {
     event.preventDefault();
     set_AI_Loading(true);
-    await new Promise((res) => setTimeout(res, 5000));
-    set_AI_Results(JSON.stringify(inputs));
-    set_AI_Loading(false);
+    const formData = new FormData();
+    formData.append("values", JSON.stringify({ ...inputs }));
+    try {
+      let resp = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        body: formData,
+      });
+      resp = await resp.json();
+      setRecommendedCrops(resp);
+      set_AI_Loading(false);
+
+      console.log(resp);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
@@ -113,7 +134,7 @@ const CropAdviser = () => {
                 </CardFooter>
               </form>
             </Card>
-            {(AI_Results || AI_Loading) && (
+            {(recommendedCrops || AI_Loading) && (
               <Card>
                 <CardHeader>
                   <CardTitle>Results</CardTitle>
@@ -123,7 +144,15 @@ const CropAdviser = () => {
                         <Loader2 className="h-10 w-10 animate-spin" />
                       </div>
                     )}
-                    {!AI_Loading && AI_Results}
+                    {!AI_Loading && recommendedCrops && (
+                      <CardContent>
+                        {recommendedCrops.map((item:any) => (
+                            <li>
+                              <div><strong>{item}</strong></div>
+                            </li>
+                        ))}
+                      </CardContent>
+                    )}
                   </CardDescription>
                 </CardHeader>
               </Card>
