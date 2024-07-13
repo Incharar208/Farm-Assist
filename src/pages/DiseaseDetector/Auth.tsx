@@ -8,19 +8,19 @@ const UnAuthAlert = () => (
     <AlertDescription>
       Please{" "}
       <Link
-        to={"/auth.register?redirectTo=/crop.adviser.ai"}
+        to={"/auth.register?redirectTo=/crop.disease.ai"}
         className="underline"
       >
         Sign up
       </Link>{" "}
       or{" "}
       <Link
-        to={"/auth.login?redirectTo=/crop.adviser.ai"}
+        to={"/auth.login?redirectTo=/crop.disease.aii"}
         className="underline"
       >
         Login
       </Link>{" "}
-      to use Crop Assist AI.
+      to use Crop Disease AI.
     </AlertDescription>
   </Alert>
 );
