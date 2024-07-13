@@ -9,6 +9,7 @@ import Weather from "./pages/WeatherReport/Weather.tsx";
 import CropAdviser from "./pages/CropAdviser/CropAdviser.tsx";
 import Disease from "./pages/DiseaseDetector/Disease.tsx";
 import ErrorPage from "./pages/ErrorHandler/ErrorPage.tsx";
+import Profile from "./pages/Profile/Profile.tsx";
 
 const MainLayout = () => (
   <>
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/crop.disease.ai",
         element: <Disease />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
       {
         path: "/auth.register",
