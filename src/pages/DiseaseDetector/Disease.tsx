@@ -1,5 +1,4 @@
-"use client";
-
+ "use client";
 import {
   Card,
   CardContent,
@@ -15,7 +14,7 @@ import * as React from "react";
 import { useAuth } from "@/components/contexts/Auth";
 import { HashLink } from "react-router-hash-link";
 import UnAuthAlert from "./Auth";
-import ResultAccordian from "./Prediction";
+// import ResultAccordian from "./Prediction";
 import { FormEvent, useState } from "react";
 
 const Disease = () => {
