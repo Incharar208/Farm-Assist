@@ -10,6 +10,7 @@ import CropAdviser from "./pages/CropAdviser/CropAdviser.tsx";
 import Disease from "./pages/DiseaseDetector/Disease.tsx";
 import ErrorPage from "./pages/ErrorHandler/ErrorPage.tsx";
 import Profile from "./pages/Profile/Profile.tsx";
+import CropYield from "./pages/Yield/CropYield.tsx";
 
 const MainLayout = () => (
   <>
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "/auth.login",
         element: <Login />,
+      },
+      {
+        path: "/crop.cropYield.ai",
+        element: <CropYield />,
       },
     ],
   },

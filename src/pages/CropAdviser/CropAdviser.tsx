@@ -33,13 +33,50 @@ const CropAdviser = () => {
   }>({});
   const [recommendedCrops, setRecommendedCrops] = useState<any>();
   const inputsList = [
-    { title: "Nitrogen", id: "N", units: "kg/ha", ex: "90.005" },
-    { title: "Phosphorus", id: "P", units: "kg/ha", ex: "42.5" },
-    { title: "Potassium", id: "K", units: "kg/ha", ex: "43.00" },
-    { title: "Temperature", id: "T", units: "celsius", ex: "29.072" },
-    { title: "Humidity", id: "H", units: "percentage", ex: "82.1674" },
-    { title: "pH", id: "pH", units: "0 to 14", ex: "6.9567" },
-    { title: "Rainfall", id: "R", units: "mm", ex: "202.93" },
+    {
+      title: "Nitrogen",
+      id: "N",
+      units: "kg/ha",
+      ex: "90.005",
+      typeIP: "number",
+    },
+    {
+      title: "Phosphorus",
+      id: "P",
+      units: "kg/ha",
+      ex: "42.5",
+      typeIP: "number",
+    },
+    {
+      title: "Potassium",
+      id: "K",
+      units: "kg/ha",
+      ex: "43.00",
+      typeIP: "number",
+    },
+    {
+      title: "Temperature",
+      id: "T",
+      units: "celsius",
+      ex: "29.072",
+      typeIP: "number",
+    },
+    {
+      title: "Humidity",
+      id: "H",
+      units: "percentage",
+      ex: "82.1674",
+      typeIP: "number",
+    },
+    { title: "pH", id: "pH", units: "0 to 14", ex: "6.9567", typeIP: "number" },
+    { title: "Rainfall", id: "R", units: "mm", ex: "202.93", typeIP: "number" },
+    {
+      title: "Recent Crop",
+      id: "CR",
+      units: "Name",
+      ex: "Wheat",
+      typeIP: "text",
+    },
   ];
   const inputsOnChange = (event: ChangeEvent<HTMLInputElement>) =>
     setInputs({ ...inputs, [event.target.id]: event.target.value });
@@ -57,7 +94,7 @@ const CropAdviser = () => {
     const formData = new FormData();
     formData.append("values", JSON.stringify({ ...inputs }));
     try {
-      let resp = await fetch("http://127.0.0.1:5000/predict", {
+      let resp = await fetch("http://127.0.0.1:5000/predictCrop", {
         method: "POST",
         body: formData,
       });
@@ -107,7 +144,7 @@ const CropAdviser = () => {
               <form onSubmit={formOnSubmit}>
                 <CardContent>
                   <div className="flex flex-wrap gap-5">
-                    {inputsList.map(({ id, title, units, ex }) => (
+                    {inputsList.map(({ id, title, units, ex, typeIP }) => (
                       <div
                         className="grid min-w-64 items-center gap-2"
                         key={id}
@@ -115,12 +152,13 @@ const CropAdviser = () => {
                         <Label htmlFor={id}>{`${title} (${units})`}</Label>
                         {USER && (
                           <Input
-                            type="number"
+                            type={typeIP}
                             step={"any"}
                             id={id}
                             placeholder={`Example: ${ex}`}
                             min={0}
                             onChange={inputsOnChange}
+                            required
                           />
                         )}
                         {!USER && <Input id={id} disabled />}
@@ -145,13 +183,15 @@ const CropAdviser = () => {
                       </div>
                     )}
                     {!AI_Loading && recommendedCrops && (
-                      <CardContent>
-                        {recommendedCrops.map((item:any) => (
-                            <li>
-                              <div><strong>{item}</strong></div>
+                      <ol>
+                        <CardContent>
+                          {recommendedCrops.map((item: any) => (
+                            <li key={item}>
+                              <strong>{item}</strong>
                             </li>
-                        ))}
-                      </CardContent>
+                          ))}
+                        </CardContent>
+                      </ol>
                     )}
                   </CardDescription>
                 </CardHeader>

@@ -19,6 +19,7 @@ const navList = [
   { title: "Weather", path: "/weather.report" },
   { title: "Crop Adviser AI", path: "/crop.adviser.ai" },
   { title: "Crop Diseases AI", path: "/crop.disease.ai" },
+  { title: "Crop Yield AI", path: "/crop.cropYield.ai" },
 ];
 
 const Header = () => {

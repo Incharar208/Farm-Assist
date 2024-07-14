@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -11,7 +11,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -23,25 +22,79 @@ const WeatherPage = () => {
   const [pinCode, setPinCode] = useState("");
   const [weatherData, setWeatherData] = useState<any[]>([]);
   const [chartData, setChartData] = useState<any[]>([]);
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [cityName, setCityName] = useState<any>("");
   const { toast } = useToast();
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-  const fetchWeatherData = async () => {
-    const API_KEY = import.meta.env.WEATHER_API_KEY;
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?zip=${pinCode},in&apiKey=${API_KEY}`
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+      },
+      (error) => {
+        toast({ description: `Geolocation error: ${error.message}` });
+      }
     );
-    const data = await response.json();
-    if (data.cod !== "200") {
-      toast({ description: "Failed to fetch weather data" });
-      return;
+  }, []);
+
+  useEffect(() => {
+    if (latitude && longitude) {
+      setLoading(true);
+      fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setCityName(data.city.name);
+          setLoading(false);
+          if (data.cod !== "200") {
+            toast({ description: "Failed to fetch weather data" });
+            return;
+          }
+          setWeatherData(data.list);
+
+          const formattedChartData = data.list.map((item: any) => ({
+            date: item.dt_txt,
+            temperature: item.main.temp - 273.15, // Convert from Kelvin to Celsius
+            humidity: item.main.humidity,
+          }));
+          setChartData(formattedChartData);
+        })
+        .catch(() => {
+          setLoading(false);
+          toast({ description: "Error fetching weather data" });
+        });
     }
-    setWeatherData(data.list);
-    const formattedChartData = data.list.map((item: any) => ({
-      date: item.dt_txt,
-      temperature: item.main.temp - 273.15, // Convert from Kelvin to Celsius
-      humidity: item.main.humidity,
-    }));
-    setChartData(formattedChartData);
+  }, [latitude, longitude, API_KEY, toast]);
+
+  const fetchWeatherDataUsingPincode = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?zip=${pinCode},in&appid=${API_KEY}`
+      );
+      const data = await response.json();
+      setLoading(false);
+      if (data.cod !== "200") {
+        toast({ description: "Failed to fetch weather data" });
+        return;
+      }
+      setWeatherData(data.list);
+      const formattedChartData = data.list.map((item: any) => ({
+        date: item.dt_txt,
+        temperature: item.main.temp - 273.15,
+        humidity: item.main.humidity,
+      }));
+      setChartData(formattedChartData);
+      setCityName(data.city.name);
+    } catch {
+      setLoading(false);
+      toast({ description: "Error fetching weather data" });
+    }
   };
 
   return (
@@ -61,35 +114,50 @@ const WeatherPage = () => {
               value={pinCode}
               onChange={(e) => setPinCode(e.target.value)}
             />
-            <Button onClick={fetchWeatherData}>Get Weather</Button>
+            <Button onClick={fetchWeatherDataUsingPincode}>Get Weather</Button>
           </div>
         </CardContent>
       </Card>
-
       {weatherData.length > 0 && (
-        <Card className="w-[95%] max-w-[800px]">
+        <Card className="w-[95%] max-w-[800px] mt-5">
           <CardHeader>
-            <CardTitle>Weather Data</CardTitle>
+            <CardTitle>
+              <center>Weather Data</center>
+            </CardTitle>
           </CardHeader>
           <CardContent>
+            <div className="mb-5">
+              <strong>City:</strong> {cityName}
+            </div>
             <ul>
-              {weatherData.slice(0, 5).map((item, index) => (
+              {weatherData.slice(0, 1).map((item, index) => (
                 <li key={index}>
-                  <div>Date and Time: {item.dt_txt}</div>
-                  <div>
-                    Temperature: {(item.main.temp - 273.15).toFixed(2)}°C
+                  {/* <div className="mb-5">
+                    <strong>Date and Time:</strong> {item.dt_txt}
+                  </div> */}
+
+                  <div className="mb-5">
+                    <strong>Temperature: </strong>
+                    {(item.main.temp - 273.15).toFixed(2)}°C
                   </div>
-                  <div>Humidity: {item.main.humidity}%</div>
-                  <div>Weather: {item.weather[0].description}</div>
+                  <div className="mb-5">
+                    <strong>Humidity: </strong>
+                    {item.main.humidity}%
+                  </div>
+                  <div>
+                    <strong>Weather: </strong>
+                    {item.weather[0].description}
+                  </div>
                 </li>
               ))}
             </ul>
           </CardContent>
         </Card>
       )}
+      {loading && <p>Loading...</p>}
 
       {chartData.length > 0 && (
-        <Card className="w-[95%] max-w-[800px] mt-10">
+        <Card className="w-[95%] max-w-[800px] mt-5">
           <CardHeader>
             <CardTitle>Temperature and Humidity Chart</CardTitle>
             <CardDescription>Showing data for the next 5 days</CardDescription>
