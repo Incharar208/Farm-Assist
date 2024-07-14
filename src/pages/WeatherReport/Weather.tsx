@@ -98,30 +98,8 @@ const WeatherPage = () => {
           </div>
         </CardContent>
       </Card>
-
-      {loading && <p>Loading...</p>}
-
-      {chartData.length > 0 && (
-        <Card className="w-[95%] max-w-[800px]">
-          <CardHeader>
-            <CardTitle>Temperature and Humidity Chart</CardTitle>
-            <CardDescription>Showing data for the next 5 days</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <AreaChart width={700} height={400} data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Area type="monotone" dataKey="temperature" stroke="#8884d8" fill="#8884d8" />
-              <Area type="monotone" dataKey="humidity" stroke="#82ca9d" fill="#82ca9d" />
-            </AreaChart>
-          </CardContent>
-        </Card>
-      )}
-
       {weatherData.length > 0 && (
-        <Card className="w-[95%] max-w-[800px] mt-10">
+        <Card className="w-[95%] max-w-[800px] mt-5">
           <CardHeader>
             <CardTitle><center>Weather Data</center></CardTitle>
           </CardHeader>
@@ -138,6 +116,26 @@ const WeatherPage = () => {
                 </li>
               ))}
             </ul>
+          </CardContent>
+        </Card>
+      )}
+      {loading && <p>Loading...</p>}
+
+      {chartData.length > 0 && (
+        <Card className="w-[95%] max-w-[800px] mt-5">
+          <CardHeader>
+            <CardTitle>Temperature and Humidity Chart</CardTitle>
+            <CardDescription>Showing data for the next 5 days</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <AreaChart width={700} height={400} data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Area type="monotone" dataKey="temperature" stroke="#8884d8" fill="#8884d8" />
+              <Area type="monotone" dataKey="humidity" stroke="#82ca9d" fill="#82ca9d" />
+            </AreaChart>
           </CardContent>
         </Card>
       )}
