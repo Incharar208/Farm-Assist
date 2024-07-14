@@ -25,4 +25,8 @@ const UnAuthAlert = () => (
   </Alert>
 );
 
+<<<<<<< HEAD
 export default UnAuthAlert;
+=======
+export default UnAuthAlert;
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1

@@ -132,7 +132,11 @@
 //               </CardContent>
 //             </Card>
 //             <div style={{ marginTop: '20px' }}></div>
+<<<<<<< HEAD
 
+=======
+          
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
 //             <Card x-chunk="dashboard-04-chunk-1">
 //               <CardHeader>
 //                 <CardTitle>
@@ -214,6 +218,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+<<<<<<< HEAD
 import {
   Select,
   SelectContent,
@@ -221,6 +226,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+=======
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -229,7 +237,10 @@ import { useAuth } from "@/components/contexts/Auth";
 import { Label } from "@/components/ui/label";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { HashLink } from "react-router-hash-link";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
 import UnAuthAlert from "./Auth";
 
 const CropYield = () => {
@@ -243,7 +254,11 @@ const CropYield = () => {
     K?: number;
     T?: number;
     H?: number;
+<<<<<<< HEAD
     F?: number;
+=======
+    pH?: number;
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
     R?: number;
   }>({});
   const [recommendedCrops, setRecommendedCrops] = useState<any>();
@@ -251,6 +266,7 @@ const CropYield = () => {
 
   const inputsList = [
     { title: "Rainfall", id: "R", units: "mm", ex: "202.93", typeIP: "number" },
+<<<<<<< HEAD
     {
       title: "Fertiliser",
       id: "F",
@@ -286,6 +302,13 @@ const CropYield = () => {
       ex: "43.00",
       typeIP: "number",
     },
+=======
+    { title: "Fertiliser", id: "ppm", units: "50 to 80", ex: "55", typeIP: "number" },
+    { title: "Temperature", id: "T", units: "celsius", ex: "29.072", typeIP: "number" },
+    { title: "Nitrogen", id: "N", units: "kg/ha", ex: "90.005", typeIP: "number" },
+    { title: "Phosphorus", id: "P", units: "kg/ha", ex: "42.5", typeIP: "number" },
+    { title: "Potassium", id: "K", units: "kg/ha", ex: "43.00", typeIP: "number" }
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
   ];
 
   const inputsOnChange = (event: ChangeEvent<HTMLInputElement>) =>
@@ -311,8 +334,12 @@ const CropYield = () => {
     }
   };
 
+<<<<<<< HEAD
   const handleCropChange = (value: string) =>
     setInputs({ ...inputs, crop: value });
+=======
+  const handleCropChange = (value: string) => setInputs({ ...inputs, crop: value });
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
 
   return (
     <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
@@ -356,7 +383,11 @@ const CropYield = () => {
                         <SelectContent>
                           <SelectItem value="rice">Rice</SelectItem>
                           <SelectItem value="wheat">Wheat</SelectItem>
+<<<<<<< HEAD
                           <SelectItem value="maze">Maize</SelectItem>
+=======
+                          <SelectItem value="maze">Maze</SelectItem>
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
                           <SelectItem value="sugarcane">Sugarcane</SelectItem>
                         </SelectContent>
                       </Select>
@@ -370,7 +401,11 @@ const CropYield = () => {
                         type="number"
                         id="area"
                         placeholder="Enter area"
+<<<<<<< HEAD
                         min={-1}
+=======
+                        min={0}
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
                         onChange={inputsOnChange}
                         required
                       />
@@ -380,8 +415,13 @@ const CropYield = () => {
                 </div>
               </CardContent>
             </Card>
+<<<<<<< HEAD
             <div style={{ marginTop: "20px" }}></div>
 
+=======
+            <div style={{ marginTop: '20px' }}></div>
+          
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
             <Card x-chunk="dashboard-04-chunk-1">
               <CardHeader>
                 <CardTitle>
@@ -423,8 +463,11 @@ const CropYield = () => {
                 </CardFooter>
               </form>
             </Card>
+<<<<<<< HEAD
             <div style={{ marginTop: "20px" }}></div>
 
+=======
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
             {(recommendedCrops || AI_Loading) && (
               <Card>
                 <CardHeader>
@@ -437,6 +480,7 @@ const CropYield = () => {
                     )}
                     {!AI_Loading && recommendedCrops && (
                       <CardContent>
+<<<<<<< HEAD
                         {/* {recommendedCrops.map((item: any) => (
                           <li key={item}>
                             <div>
@@ -445,12 +489,20 @@ const CropYield = () => {
                           </li>
                         ))} */}
                         Yield is {recommendedCrops}
+=======
+                        {recommendedCrops.map((item: any) => (
+                          <li key={item}>
+                            <div><strong>{item}</strong></div>
+                          </li>
+                        ))}
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
                       </CardContent>
                     )}
                   </CardDescription>
                 </CardHeader>
               </Card>
             )}
+<<<<<<< HEAD
             {/* {description && (
               <Card>
                 <CardHeader>
@@ -459,6 +511,18 @@ const CropYield = () => {
                 </CardHeader>
               </Card>
             )} */}
+=======
+            {description && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Description</CardTitle>
+                  <CardDescription>
+                    {description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            )}
+>>>>>>> 8e76f0fe4b5144f0ee5d9a46ab87ede40ee232e1
           </div>
         </div>
       </div>
