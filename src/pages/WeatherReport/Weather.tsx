@@ -12,6 +12,7 @@ const WeatherPage = () => {
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [cityName, setCityName] = useState<any>('')
   const { toast } = useToast();
   const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -33,6 +34,7 @@ const WeatherPage = () => {
       fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`)
         .then((res) => res.json())
         .then((data) => {
+          setCityName(data.city.name)
           setLoading(false);
           if (data.cod !== "200") {
             toast({ description: "Failed to fetch weather data" });
@@ -124,10 +126,12 @@ const WeatherPage = () => {
             <CardTitle><center>Weather Data</center></CardTitle>
           </CardHeader>
           <CardContent>
+              <div className="mb-5"><strong>City:</strong> {cityName}</div>
             <ul>
               {weatherData.slice(0, 1).map((item, index) => (
                 <li key={index}>
                   <div className="mb-5"><strong>Date and Time:</strong> {item.dt_txt}</div>
+                  
                   <div className="mb-5"><strong>Temperature: </strong>{(item.main.temp - 273.15).toFixed(2)}°C</div>
                   <div className="mb-5"><strong>Humidity: </strong>{item.main.humidity}%</div>
                   <div><strong>Weather: </strong>{item.weather[0].description}</div>
